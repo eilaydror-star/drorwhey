@@ -987,6 +987,11 @@ async function boot(){
     if(!snap.metadata.fromCache){live=true;clearTimeout(timer);if(canWrite)setStatus(STANDALONE?"שמור בטלפון ✓":"מסונכרן ✓")}
     render();
   },()=>{clearTimeout(timer);setStatus("אין גישה לנתונים",true)});
+  if(STANDALONE&&!lsGet("drorwhey:seeded")){ // first launch on this phone: schedule this month and next from the template
+    setTimeout(async()=>{if(S.days.size)return lsSet("drorwhey:seeded","1");const t=todayKey(),ks=[];
+      for(let i=0;i<62;i++){const k=addDays(t,i),tp=tplFor(parseKey(k).getDay());if(tp){mutate(k,e=>{e.workout=tp.w;e.done=false;if(tp.t)e.time=tp.t});ks.push(k)}}
+      lsSet("drorwhey:seeded","1");render();for(const k of ks)await saveDay(k);toast("האימונים לחודשיים הקרובים שובצו לפי התבנית")},300);
+  }
   db.doc("settings/main").onSnapshot(s=>{if(s.exists){S.settings={...S.settings,...s.data()};render()}},()=>{});
   db.doc("gcal/index").onSnapshot(s=>{if(s.exists&&!S.gcBusy){S.gcal={...(s.data().events||{})};render()}},()=>{});
 }

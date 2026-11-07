@@ -1,7 +1,7 @@
 // DrorWhey service worker: the app opens instantly and works without reception.
 // Pages: network first (so updates arrive), falling back to the cached copy offline.
 // Fonts and icons: cache first.
-const VERSION = "6964922dfc";
+const VERSION = "fef3d50f74";
 const CACHE = "drorwhey-" + VERSION;
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
 
